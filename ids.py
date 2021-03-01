@@ -1,18 +1,7 @@
 from scapy.all import *
 from datetime import datetime
-from termcolor import colored
-import requests
-import os
+import requests, os, re
 
-import re
-user_input = input("please make sure your running this as root!")
-os.system('apt install net-tools -y')
-os.system('ifconfig | grep "flags"')
-adapter = input("what adapter are you using (example: wlan0) : ")
-os.system('sudo cat /var/log/auth.log* | grep "ssh" >> ssh_attempts')
-print('ssh logs:')
-os.system('sudo cat ssh_attempts | grep "Accepted"')
-continue_ = input(" run IDS.. enter")
 
 class ids:
     __flagsTCP = {
@@ -73,7 +62,10 @@ class ids:
                     dst = stream.split(':')[1]
                     print("Excessive packets from: %s --> %s, This has been logged in /Documents/IDSlogs." %(src,dst))
 
-if __name__ == '__main__':
-    print("Dissertation IDS with Python")
+
+def main():
+    user_input = input("please make sure your running this as root!")
+    os.system('apt install net-tools -y')
+    os.system('ifconfig | grep "flags"')
+    adapter = input("what adapter are you using (example: wlan0) : ")
     sniff(filter="ip",iface=adapter,prn=ids().sniffPackets)
-    
